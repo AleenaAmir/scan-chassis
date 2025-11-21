@@ -154,28 +154,29 @@ function multerErrorHandler(err, req, res, next) {
 
        console.log("OCR Text:", text.substring(0, 150), "...");
 
-       const chassis = extractChassisNumber(text);
+      const chassis = extractChassisNumber(text);
 
-       if (!chassis) {
-         return res.status(200).json({
-           success: false,
-           message: "Chassis number not found",
-           extractedText: text.substring(0, 400),
-         });
-       }
+      if (!chassis) {
+        return res.status(200).json({
+          success: false,
+          message: "Chassis number not found",
+          extractedText: text.substring(0, 400),
+        });
+      }
 
-       // Save image only on success
-       const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}${path.extname(
-         file.originalname
-       )}`;
-       const savePath = path.join(uploadsDir, fileName);
-       fs.writeFileSync(savePath, file.buffer);
+      // Save image only when chassis number is successfully extracted
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}${path.extname(
+        file.originalname
+      )}`;
+      const savePath = path.join(uploadsDir, fileName);
+      fs.writeFileSync(savePath, file.buffer);
+    
 
       return res.json({
         success: true,
         chassisNumber: chassis,
         imageName: fileName,
-        message: "Chassis number extracted successfully",
+        message: "Chassis number extracted successfully and image saved",
       });
     } catch (err) {
       console.error("Processing Error:", err.message);

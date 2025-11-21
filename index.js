@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const { ImageAnnotatorClient } = require("@google-cloud/vision");
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -198,6 +199,7 @@ app.get("/health", (req, res) => {
 /* -------------------------------------------------------------
    Start Server
 ------------------------------------------------------------- */
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
+  console.log(`Server accessible from external IP`);
 });
